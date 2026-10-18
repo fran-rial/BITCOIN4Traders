@@ -29,71 +29,51 @@ pip install -e .
 pip install pytest pytest-cov black flake8 mypy
 ```
 
-## 📋 Development Workflow
+## 📋 GitHub Flow
 
-### 1. Create a Branch
+Keep `main` releasable. Make changes on a short-lived branch and merge them through a Pull Request; do not push directly to `main`.
 
-```bash
-git checkout -b feature/your-feature-name
-# or
-git checkout -b fix/your-bug-fix
-```
-
-### 2. Make Your Changes
-
-- Write clean, readable code
-- Follow PEP 8 style guidelines
-- Add docstrings to all functions and classes
-- Keep functions focused and small
-
-### 3. Test Your Changes
+### 1. Start from the Latest Main
 
 ```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test file
-pytest tests/test_antibias_integration.py -v
-
-# Run with coverage
-pytest tests/ --cov=src --cov-report=html
+git switch main
+git pull --ff-only origin main
+git switch -c fix/short-description
 ```
 
-### 4. Code Quality Checks
+Use a descriptive prefix such as `feat/`, `fix/`, `docs/`, `test/`, or `ci/`.
+
+### 2. Make and Verify the Change
+
+- Keep each branch focused on one issue or change.
+- Add or update tests for behavior changes.
+- Run the relevant tests and checks locally. See [the local Python workflow skill](.github/skills/local-python-workflow/SKILL.md) for environment setup.
+- Never include API keys, passwords, account data, or other secrets in code, logs, screenshots, or test fixtures.
+- For trading or risk changes, state the potential financial impact and use simulated or isolated testnet evidence only. Do not use live credentials for development tests.
+
+### 3. Commit and Push the Branch
 
 ```bash
-# Format code with black
-black src/ tests/
-
-# Check with flake8
-flake8 src/ tests/ --max-line-length=100
-
-# Type checking with mypy
-mypy src/
+git status
+git add <files>
+git commit -m "fix: describe the change"
+git push -u origin fix/short-description
 ```
 
-### 5. Commit Your Changes
+Use Conventional Commit prefixes such as `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `perf:`, and `ci:`. Stage only files related to the change.
 
-```bash
-git add .
-git commit -m "feat: add your feature description"
-```
+### 4. Open a Pull Request
 
-Use conventional commits:
-- `feat:` New feature
-- `fix:` Bug fix
-- `docs:` Documentation changes
-- `test:` Adding tests
-- `refactor:` Code refactoring
-- `perf:` Performance improvements
+Open a PR against `main` and complete the repository PR template. Explain the problem, the approach, tests run, and any risks or limitations. Link the related issue when one exists.
 
-### 6. Push and Create Pull Request
+### 5. Review and Merge
 
-```bash
-git push origin feature/your-feature-name
-```
+- Wait for all required CI checks and resolve review comments before merging.
+- Do not merge with failing or skipped required checks.
+- Use the repository's selected merge strategy and delete the short-lived branch after merge.
+- For changes that affect trading execution, risk limits, or secrets, request an independent review where available.
 
-Then create a Pull Request on GitHub.
+Repository administrators should protect `main` in GitHub settings by requiring Pull Requests, the `python-tests` and `frontend-checks` status checks, resolved review conversations, and up-to-date branches. Disable force pushes and branch deletion. These protections must be enabled in GitHub; they cannot be enforced by this document alone.
 
 ## 📁 Project Structure Guidelines
 
